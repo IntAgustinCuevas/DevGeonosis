@@ -1,0 +1,37 @@
+<mvc:View
+    controllerName="devgeonosis.controller.Catalog"
+    xmlns:core="sap.ui.core"
+    xmlns:mvc="sap.ui.core.mvc"
+    xmlns="sap.m"
+    xmlns:f="sap.f"
+>
+    <!-- ARBOL QUE CONTIENE LAS CATEGORIAS Y SUBCATEGORIAS PARA SELECCIONARLAS Y LUEGO FILTRAR -->
+    <Tree
+        id="CategoryTree"
+        items="{
+            path: 'productsModel>/catalog/categories',
+            parameters: {
+                arrayNames: ['subcategories']
+            }
+        }"
+        includeItemInSelection="true"
+        visible="{estado>/catalogSelectionEnabled}"
+        mode="SingleSelect"
+        class=""
+    >
+        <headerToolbar>
+            <Toolbar>
+                <Title text="{i18n>treeHeaderText}" />
+                <ToolbarSpacer />
+                <Button
+                    id="clearSelectionButton"
+                    icon="sap-icon://clear-all"
+                    tooltip="Deseleccionar todos"
+                    press=".onClearCategorySelection"
+                />
+            </Toolbar>
+        </headerToolbar>
+
+        <StandardTreeItem title="{productsModel>name}" />
+    </Tree>
+</mvc:View>

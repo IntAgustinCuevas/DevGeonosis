@@ -1,0 +1,494 @@
+<mvc:View
+    controllerName="devgeonosis.controller.Detail"
+    xmlns:mvc="sap.ui.core.mvc"
+    xmlns="sap.m"
+    xmlns:f="sap.f"
+    xmlns:core="sap.ui.core"
+    xmlns:l="sap.ui.layout"
+    xmlns:card="sap.f.cards"
+>
+    <Page showHeader="false">
+        <ScrollContainer
+            height="100%"
+            vertical="true"
+        >
+            <!-- Contenedor principal -->
+            <l:Grid
+                defaultSpan="XL12 L12 M12 S12"
+                class="sapUiMediumMargin"
+            >
+                <!-- Parte superior-->
+                <Breadcrumbs
+                    currentLocationText="{ModelProductsOnly>name}"
+                    class="sapUiSmallMarginBottom"
+                >
+                    <layoutData>
+                        <l:GridData span="XL12 L12 M12 S12" />
+                    </layoutData>
+                    <Link
+                        text="{i18n>breadcrumbsLinkText}"
+                        press=".onHome"
+                    />
+                </Breadcrumbs>
+
+                <!-- Información del producto -->
+                <l:Grid
+                    defaultSpan="XL12 L12 M12 S12"
+                    class="sapUiSmallMarginBottom"
+                >
+                    <l:layoutData>
+                        <l:GridData span="XL12 L12 M12 S12" />
+                    </l:layoutData>
+
+                    <!-- Columna 1: Imagen -->
+                    <VBox
+                        alignItems="Center"
+                        justifyContent="Center"
+                        class="sapUiMediumMarginEnd"
+                    >
+                        <layoutData>
+                            <l:GridData span="XL4 L4 M5 S12" />
+                        </layoutData>
+                        <f:Card
+                            class="sapUiMediumMarginBottom"
+                            width="100%"
+                        >
+                            <f:content>
+                                <VBox
+                                    alignItems="Center"
+                                    justifyContent="Center"
+                                    class="sapUiMediumMargin"
+                                >
+                                    <Image
+                                        src="{ModelProductsOnly>image}"
+                                        width="240px"
+                                        height="240px"
+                                        densityAware="false"
+                                        alt="{ModelProductsOnly>name}"
+                                        class="productImage"
+                                    />
+                                    <HBox
+                                        class="sapUiSmallMarginTop"
+                                        justifyContent="Center"
+                                    >
+                                        <RatingIndicator
+                                            value="{ModelProductsOnly>rating}"
+                                            maxValue="5"
+                                            displayOnly="true"
+                                            class="sapUiTinyMarginEnd"
+                                        />
+                                        <Text
+                                            text="({ModelProductsOnly>rating})"
+                                            class="sapUiTinyMarginTop"
+                                        />
+                                    </HBox>
+                                </VBox>
+                            </f:content>
+                        </f:Card>
+                    </VBox>
+
+
+                    <!-- Columna 2: Información del producto -->
+                    <VBox>
+                        <layoutData>
+                            <l:GridData span="XL8 L8 M7 S12" />
+                        </layoutData>
+                        <!-- Título y acciones rápidas -->
+                        <HBox
+                            justifyContent="SpaceBetween"
+                            class="sapUiSmallMarginBottom"
+                            width="100%"
+                        >
+                            <VBox >
+                                <Title
+                                    text="{ModelProductsOnly>name}"
+                                    wrapping="true"
+                                    level="H2"
+                                    titleStyle="H2"
+                                    class="sapUiMediumMarginBottom productTitle"
+                                />
+                                <Text text="{ModelProductsOnly>description}"></Text>
+                            </VBox>
+                            <HBox>
+                                <Button
+                                    icon="sap-icon://favorite"
+                                    type="Transparent"
+                                    tooltip="{i18n>buttonFavoriteTooltip}"
+                                    press=".onAddToFavorite"
+                                    class="sapUiTinyMarginEnd"
+                                />
+                            </HBox>
+                        </HBox>
+
+                        <!-- Precio y disponibilidad -->
+                        <HBox
+                            alignItems="Center"
+                            class="sapUiMediumMarginBottom"
+                        >
+                            <ObjectStatus
+                                text="{i18n>objectStatusText}"
+                                state="{= ${ModelProductsOnly>stock} > 10 ? 'Success' : ${ModelProductsOnly>stock} > 5 ? 'Warning' : 'Error' }"
+                                icon="{= ${ModelProductsOnly>stock} > 10 ? 'sap-icon://message-success' : ${ModelProductsOnly>stock} > 5 ? 'sap-icon://message-warning' : 'sap-icon://message-error' }"
+                                class="sapUiSmallMarginEnd"
+                            />
+                            <Text
+                                text="Disponible: {ModelProductsOnly>stock} unidades"
+                            />
+                        </HBox>
+
+                        <!-- Precio y botones de compra -->
+                        <f:Card class="sapUiMediumMarginBottom">
+                            <f:content>
+                                <VBox class="sapUiMedium">
+                                    <!-- Precios y selección de variantes -->
+                                    <HBox
+                                        justifyContent="SpaceBetween"
+                                        alignItems="Center"
+                                        class="sapUiMediumMargin"
+                                    >
+                                        <!-- Sección de precio -->
+                                        <ObjectNumber
+                                            number="{= ${ModelProductsOnly>price}.toFixed(2) }"
+                                            unit="{ModelProductsOnly>currency}"
+                                            emphasized="true"
+                                            class="productPrice"
+                                        />
+
+                                        <!-- Sección de variantes y cantidad -->
+                                        <VBox alignItems="End">
+                                            <Select
+                                                id="variantSelect"
+                                                items="{ModelProductsOnly>variants}"
+                                                class="sapUiTinyMarginBottom"
+                                                width="10.5rem"
+                                                visible="{= ${ModelProductsOnly>variants}.length > 0}"
+                                            >
+                                                <core:Item
+                                                    key="{ModelProductsOnly>variantId}"
+                                                    text="{ModelProductsOnly>color}"
+                                                />
+                                            </Select>
+
+                                            <StepInput
+                                                id="quantityInput"
+                                                min="1"
+                                                max="{ModelProductsOnly>stock}"
+                                                value="1"
+                                                width="8rem"
+                                            />
+                                        </VBox>
+                                    </HBox>
+
+                                    <!-- Botones de compra -->
+                                    <HBox
+                                        justifyContent="Start"
+                                        class="sapUiMediumMarginBeginEnd sapUiMediumMarginBottom"
+                                    >
+                                        <Button
+                                            text="{i18n>buttonAddCart}"
+                                            type="Emphasized"
+                                            press=".onAddToCart"
+                                            class="buyNowBtn sapUiMediumMarginEnd"
+                                            width="100%"
+                                            icon="sap-icon://add-product"
+                                        />
+                                    </HBox>
+                                </VBox>
+                            </f:content>
+                        </f:Card>
+                    </VBox>
+                </l:Grid>
+
+                <!-- Tabs para detalles adicionales -->
+                <IconTabBar
+                    id="productDetailsTabs"
+                    expanded="true"
+                    class="sapUiResponsiveContentPadding"
+                >
+                    <layoutData>
+                        <l:GridData span="XL12 L12 M12 S12" />
+                    </layoutData>
+                    <items>
+                        <IconTabFilter
+                            key="specs"
+                            text="{i18>iconTabFilterText}"
+                            icon="sap-icon://technical-object"
+                        >
+                            <l:VerticalLayout
+                                width="100%"
+                                class="sapUiSmallMargin"
+                            >
+                                <l:Grid
+                                    defaultSpan="XL6 L6 M12 S12"
+                                    vSpacing="1"
+                                >
+                                    <!-- Listado de especificaciones -->
+                                    <l:content>
+                                        <ObjectListItem
+                                            title="{i18n>objectListDimensionsTitle}"
+                                            number="{ModelProductsOnly>details/height}"
+                                            icon="sap-icon://vertical-bar-chart"
+                                        />
+                                        <ObjectListItem
+                                            title="{i18n>objectListMaterialTitle}"
+                                            number="{ModelProductsOnly>details/material}"
+                                            icon="sap-icon://lab"
+                                        />
+                                        <ObjectListItem
+                                            title="{i18n>objectListManufacturerTitle}"
+                                            number="{ModelProductsOnly>details/manufacturer}"
+                                            icon="sap-icon://factory"
+                                        />
+                                        <ObjectListItem
+                                            title="{i18n>objectListDetailsTitle}"
+                                            number="{ModelProductsOnly>details/weight}"
+                                            icon="sap-icon://measure"
+                                        />
+                                    </l:content>
+                                </l:Grid>
+                            </l:VerticalLayout>
+                        </IconTabFilter>
+
+                        <IconTabFilter
+                            key="related"
+                            text="{i18n>iconTabFilterText}"
+                            icon="sap-icon://product"
+                            count="3"
+                        >
+                            <l:Grid
+                                defaultSpan="XL4 L4 M6 S12"
+                                class="sapUiSmallMargin"
+                            >
+                                <!-- Placeholder para productos relacionados -->
+                                <f:Card width="100%">
+                                    <f:header>
+                                        <card:Header
+                                            title="Sable de Luke Skywalker"
+                                        />
+                                    </f:header>
+                                    <f:content>
+                                        <VBox
+                                            alignItems="Center"
+                                            class="sapUiSmallMargin"
+                                        >
+                                            <Image
+                                                src="../assets/images/sable_luke.png"
+                                                width="120px"
+                                                height="120px"
+                                            />
+                                            <ObjectNumber
+                                                number="199.99"
+                                                unit="USD"
+                                                class="sapUiTinyMarginTop"
+                                            />
+                                            <Button
+                                                text="Ver detalles"
+                                                type="Transparent"
+                                                class="sapUiTinyMarginTop"
+                                            />
+                                        </VBox>
+                                    </f:content>
+                                </f:Card>
+
+                                <f:Card width="100%">
+                                    <f:header>
+                                        <card:Header title="Leia Organa" />
+                                    </f:header>
+                                    <f:content>
+                                        <VBox
+                                            alignItems="Center"
+                                            class="sapUiSmallMargin"
+                                        >
+                                            <Image
+                                                src="../assets/images/leia.png"
+                                                width="120px"
+                                                height="120px"
+                                            />
+                                            <ObjectNumber
+                                                number="79.99"
+                                                unit="USD"
+                                                class="sapUiTinyMarginTop"
+                                            />
+                                            <Button
+                                                text="Ver detalles"
+                                                type="Transparent"
+                                                class="sapUiTinyMarginTop"
+                                            />
+                                        </VBox>
+                                    </f:content>
+                                </f:Card>
+
+                                <f:Card width="100%">
+                                    <f:header>
+                                        <card:Header
+                                            title="Poster de Iconos Star Wars"
+                                        />
+                                    </f:header>
+                                    <f:content>
+                                        <VBox
+                                            alignItems="Center"
+                                            class="sapUiSmallMargin"
+                                        >
+                                            <Image
+                                                src="../assets/images/poster_iconos.png"
+                                                width="120px"
+                                                height="120px"
+                                            />
+                                            <ObjectNumber
+                                                number="24.99"
+                                                unit="USD"
+                                                class="sapUiTinyMarginTop"
+                                            />
+                                            <Button
+                                                text="Ver detalles"
+                                                type="Transparent"
+                                                class="sapUiTinyMarginTop"
+                                            />
+                                        </VBox>
+                                    </f:content>
+                                </f:Card>
+                            </l:Grid>
+                        </IconTabFilter>
+
+                        <IconTabFilter
+                            key="reviews"
+                            text="Opiniones"
+                            icon="sap-icon://feedback"
+                            count="42"
+                        >
+                            <VBox class="sapUiSmallMargin">
+                                <!-- Resumen de valoraciones -->
+                                <HBox
+                                    justifyContent="SpaceBetween"
+                                    alignItems="Center"
+                                    class="sapUiMediumMarginBottom"
+                                >
+                                    <VBox>
+                                        <Title
+                                            text="Valoración media"
+                                            level="H3"
+                                        />
+                                        <HBox alignItems="Center">
+                                            <ObjectNumber
+                                                number="{ModelProductsOnly>rating}"
+                                                unit="/5"
+                                                emphasized="true"
+                                                class="sapUiTinyMarginEnd"
+                                            />
+                                            <RatingIndicator
+                                                value="{ModelProductsOnly>rating}"
+                                                maxValue="5"
+                                                displayOnly="true"
+                                            />
+                                        </HBox>
+                                        <ObjectStatus
+                                            text="Basado en 42 opiniones"
+                                            class="sapUiTinyMarginTop"
+                                        />
+                                    </VBox>
+                                    <Button
+                                        text="Escribir opinión"
+                                        icon="sap-icon://write-new-document"
+                                        type="Emphasized"
+                                    />
+                                </HBox>
+
+                                <!-- Lista de opiniones -->
+                                <List
+                                    id="reviewsList"
+                                    headerText="Opiniones recientes"
+                                    showSeparators="Inner"
+                                    class="sapUiSmallMarginBottom"
+                                >
+                                    <FeedListItem
+                                        sender="Darth Fan"
+                                        icon="sap-icon://customer"
+                                        timestamp="Hace 3 días"
+                                        text="¡Esta figura de Luke es increíble! Los detalles son impresionantes y la calidad de construcción es excelente. Recomendaría este producto a cualquier fan de Star Wars."
+                                        info="5.0 ★★★★★"
+                                    />
+                                    <FeedListItem
+                                        sender="Jedi Master"
+                                        icon="sap-icon://customer"
+                                        timestamp="Hace 1 semana"
+                                        text="Muy buena figura. Los accesorios intercambiables son un gran detalle, aunque el sable de luz podría tener un mejor acabado. En general, estoy satisfecho con la compra."
+                                        info="4.0 ★★★★☆"
+                                    />
+                                    <FeedListItem
+                                        sender="Rebel Alliance"
+                                        icon="sap-icon://customer"
+                                        timestamp="Hace 2 semanas"
+                                        text="Cumple con las expectativas. La articulación es buena, pero algunas poses son difíciles de mantener. La pintura y los detalles son excelentes."
+                                        info="4.5 ★★★★½"
+                                    />
+                                </List>
+
+                                <Button
+                                    text="Ver todas las opiniones"
+                                    type="Transparent"
+                                    width="100%"
+                                    icon="sap-icon://show"
+                                />
+                            </VBox>
+                        </IconTabFilter>
+                    </items>
+                </IconTabBar>
+
+                <!-- Banner promocional -->
+                <f:Card class="sapUiMediumMarginTop">
+                    <f:layoutData>
+                        <l:GridData span="XL12 L12 M12 S12" />
+                    </f:layoutData>
+                    <f:content>
+                        <HBox
+                            justifyContent="SpaceBetween"
+                            alignItems="Center"
+                            class="sapUiMediumMargin"
+                            backgroundDesign="Translucent"
+                        >
+                            <VBox class="sapUiSmallMarginEnd">
+                                <Title
+                                    text="¿Buscas más productos del universo Star Wars?"
+                                    level="H2"
+                                />
+                                <Text
+                                    text="Explora nuestra colección completa de naves, figuras, réplicas y más."
+                                    class="sapUiTinyMarginTop"
+                                />
+                            </VBox>
+                            <Button
+                                text="Ver catálogo"
+                                type="Emphasized"
+                                press=".onExploreMore"
+                                icon="sap-icon://inspect"
+                            />
+                        </HBox>
+                    </f:content>
+                </f:Card>
+            </l:Grid>
+        </ScrollContainer>
+
+        <!-- Footer con información adicional -->
+        <footer>
+            <Toolbar>
+                <ToolbarSpacer />
+                <Button
+                    icon="sap-icon://compare"
+                    tooltip="Comparar productos"
+                    type="Transparent"
+                />
+                <Button
+                    icon="sap-icon://print"
+                    tooltip="Imprimir detalles"
+                    type="Transparent"
+                />
+                <Button
+                    icon="sap-icon://action"
+                    tooltip="Más acciones"
+                    type="Transparent"
+                />
+                <ToolbarSpacer />
+            </Toolbar>
+        </footer>
+    </Page>
+</mvc:View>

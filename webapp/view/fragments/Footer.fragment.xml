@@ -1,0 +1,30 @@
+<c:FragmentDefinition
+    xmlns="sap.m"
+    xmlns:c="sap.ui.core"
+    xmlns:app="http://schemas.sap.com/sapui5/extension/sap.ui.core.CustomData/1"
+>
+    <Bar class="myStickyFooter">
+        <contentLeft>
+            <Image
+                src="https://geonosis.com.ar/wp-content/uploads/2024/09/geonosis-logo.png"
+                width="100px"
+                height="auto"
+            />
+        </contentLeft>
+        <contentMiddle>
+            <Text />
+        </contentMiddle>
+        <contentRight>
+            <Button
+                press=".onTheme"
+                app:Tema="L"
+                icon="sap-icon://light-mode"
+            />
+            <Button
+                press=".onTheme"
+                app:Tema="D"
+                icon="sap-icon://dark-mode"
+            />
+        </contentRight>
+    </Bar>
+</c:FragmentDefinition>

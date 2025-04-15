@@ -1,0 +1,117 @@
+/* Enter your custom styles here */
+.CustomObjectPageDynamicHeaderTitle {
+    margin-top: 0rem;
+    background: linear-gradient(to right, #ffe259, #ffa751);
+    padding: 0rem;
+    border-radius: 10px;
+}
+
+.myProductCard {
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+    border-radius: 8px;
+    padding: 1rem;
+    background-color: #ffffff;
+}
+
+.mySticky {
+    position: sticky;
+    top: 0;
+    z-index: 100; 
+}
+
+.myStickyFooter {
+    position: sticky;
+    bottom: 0;
+    z-index: 100; 
+}
+
+  /* Estilo para la imagen del producto */
+.productImage {
+    border-radius: 8px;
+    transition: transform 0.3s ease;
+}
+
+.productImage:hover {
+    transform: scale(1.05);
+}
+
+/* Estilo para el título del producto */
+.productTitle {
+    font-weight: bold !important;
+    color: #1d2d3e !important;
+}
+
+/* Estilo para el precio */
+.productPrice {
+    font-size: 1.5rem !important;
+    color: #0a6ed1 !important;
+    margin-bottom: 0.5rem;
+    padding: 0.5rem;
+}
+
+/* Estilo para las tarjetas */
+.sapFCard {
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1) !important;
+    transition: box-shadow 0.3s ease;
+    border-radius: 8px !important;
+}
+
+.sapFCard:hover {
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15) !important;
+}
+
+/* Estilo para las opiniones */
+.sapMFeedListItem {
+    border-left: 4px solid #f0f0f0;
+    padding-left: 1rem;
+}
+
+/* Estilo para las estrellas */
+.sapMRI {
+    color: #e9730c !important;
+}
+
+/* Estilo para los tabs */
+.sapMITBContent {
+    border: 1px solid #e5e5e5;
+    border-top: none;
+    background-color: #ffffff;
+}
+
+/* Estilo para los botones de acción */
+.buyNowBtn .sapMBtnInner {
+    background-color: #0a6ed1 !important;
+    border-color: #0a6ed1 !important;
+}
+
+/* Estilo para Star Wars */
+.sapFCardHeader.starWarsHeader {
+    background-color: #1d2d3e;
+    color: #fde101;
+}
+
+.sapFCard .sapFCardContent {
+    padding: 0;
+}
+
+/* Estilo para la descripción del producto */
+.productDescription {
+    line-height: 1.5;
+}
+
+/* Ajustes para dispositivos móviles */
+@media (max-width: 600px) {
+    .sapMHBox.sapMHBoxAlignItemsCenter {
+        flex-direction: column;
+        align-items: flex-start !important;
+    }
+    
+    .sapMHBox.sapMHBoxAlignItemsCenter .sapMVBox {
+        width: 100%;
+        margin-top: 1rem;
+    }
+    
+    .sapMBtn {
+        margin-top: 0.5rem;
+    }
+}

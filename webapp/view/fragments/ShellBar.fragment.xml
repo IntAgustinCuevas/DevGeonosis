@@ -1,0 +1,28 @@
+<core:FragmentDefinition
+    xmlns="sap.f"
+    xmlns:m="sap.m"
+    xmlns:f="sap.f"
+    xmlns:core="sap.ui.core"
+    xmlns:mvc="sap.ui.core.mvc"
+>
+    <ShellBar
+        id="ShellBarFragment"
+        homeIcon="../../assets/images/logo_starwars.png"
+        class="sapUiContentPadding"
+        showNavButton="{= ${showNavButton} === true}"
+        navButtonPressed=".onBack"
+    >
+        <additionalContent>
+            <m:OverflowToolbarButton
+                icon="sap-icon://favorite"
+                tooltip="{i18n>tooltipFavoriteText}"
+                press=".onFavoritePress"
+            />
+            <m:OverflowToolbarButton
+                icon="sap-icon://cart"
+                tooltip="{i18n>tooltipCartText}"
+                press=".onCartPress"
+            />
+        </additionalContent>
+    </ShellBar>
+</core:FragmentDefinition>

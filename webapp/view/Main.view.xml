@@ -1,0 +1,172 @@
+<mvc:View
+    xmlns:table="sap.ui.table"
+    controllerName="devgeonosis.controller.Main"
+    xmlns:mvc="sap.ui.core.mvc"
+    xmlns="sap.m"
+    xmlns:f="sap.f"
+    xmlns:core="sap.ui.core"
+    height="100%"
+>
+    <!-- PAGINA DE VISUALIZACION DE LISTADO DE PRODUCTOS -->
+    <Page
+        class=""
+        showHeader="false"
+        enableScrolling="true"
+        showNavButton="false"
+    >
+        <ScrollContainer
+            class="mySticky"
+            vertical="true"
+            height="auto"
+        >
+            <!-- FRAGMENTO DE SHELLBAR -->
+            <core:Fragment
+                fragmentName="devgeonosis.view.fragments.ShellBar"
+                type="XML"
+            />
+        </ScrollContainer>
+        <content>
+            <!-- TABLA DE PRODUCTOS -->
+            <Table
+                id="TableMainView"
+                items="{ModelProductsOnly>/}"
+                growing="true"
+                growingScrollToLoad="true"
+                growingThreshold="10"
+            >
+                <!-- HEADER CON SEARCHFIELD Y BOTONES DE ORDENAMIENTO Y FILTRADO -->
+                <headerToolbar>
+                    <OverflowToolbar id="OverFlowToolBarMain">
+                        <ToolbarSpacer />
+                        <SearchField
+                            ariaLabelledBy="text1"
+                            id="SearchFieldMain"
+                            liveChange=".onSearch"
+                        >
+                            <layoutData>
+                                <OverflowToolbarLayoutData
+                                    maxWidth="300px"
+                                    shrinkable="true"
+                                    priority="NeverOverflow"
+                                />
+                            </layoutData>
+                        </SearchField>
+                        <Button
+                            id="openCatalogDialogButton"
+                            icon="sap-icon://menu2"
+                            text="{i18n>catalogButton}"
+                            press=".onOpenCatalogDialog"
+                            visible="{device>/system/phone}"
+                        />
+                        <Button
+                            text="{i18n>resetButton}"
+                            type="Transparent"
+                            press=".onResetFilters"
+                        />
+                        <OverflowToolbarButton
+                            tooltip="{i18n>sortButton}"
+                            type="Transparent"
+                            text="{i18n>sortButton}"
+                            icon="sap-icon://sort"
+                            press=".onChangeOrder"
+                        />
+                    </OverflowToolbar>
+                </headerToolbar>
+                <!-- DEFINICION DE COLUMNAS DE LA TABLA -->
+                <columns>
+                    <Column width="12em">
+                        <Text text="{i18n>columnProductText}" />
+                    </Column>
+                    <Column
+                        minScreenWidth="Tablet"
+                        demandPopin="true"
+                    >
+                        <Text text="{i18n>columnRatingText}" />
+                    </Column>
+                    <Column
+                        minScreenWidth="Tablet"
+                        demandPopin="true"
+                        hAlign="End"
+                    >
+                        <Text text="{i18n>columnDimensionsText}" />
+                    </Column>
+                    <Column hAlign="End">
+                        <Text text="{i18n>columnPriceText}" />
+                    </Column>
+                    <Column
+                        hAlign="Center"
+                        width="8em"
+                    >
+                        <Text text="{i18n>columnActionsText}" />
+                    </Column>
+                </columns>
+
+                <items>
+                    <ColumnListItem
+                        type="Navigation"
+                        press="onProductPress"
+                    >
+                        <cells>
+                            <!-- CELDA PRODUCTO CON IMAGEN + TÍTULO + FABRICANTE -->
+                            <VBox>
+                                <Image
+                                    src="{ModelProductsOnly>image}"
+                                    width="80px"
+                                    densityAware="false"
+                                    alt="{ModelProductsOnly>name}"
+                                />
+                                <ObjectIdentifier
+                                    title="{ModelProductsOnly>name}"
+                                    text="{ModelProductsOnly>details/manufacturer}"
+                                />
+                            </VBox>
+
+                            <!-- CELDA RATING -->
+                            <RatingIndicator
+                                value="{ModelProductsOnly>rating}"
+                                maxValue="5"
+                                iconSize="1.5rem"
+                                enabled="false"
+                            />
+
+                            <!-- CELDA MATERIAL -->
+                            <Text text="{ModelProductsOnly>details/material}" />
+
+                            <!-- CELDA PRECIO -->
+                            <ObjectNumber
+                                number="{ModelProductsOnly>price}"
+                                unit="{ModelProductsOnly>currency}"
+                                emphasized="true"
+                            />
+
+                            <!-- CELDA ACCIONES (BOTONES) -->
+                            <HBox
+                                justifyContent="Center"
+                                alignItems="Center"
+                                wrap="Wrap"
+                            >
+                                <Button
+                                    icon="sap-icon://cart-3"
+                                    type="Emphasized"
+                                    tooltip="{i18n>addToCartTooltip}"
+                                    press=".onAddToCart"
+                                    class="sapUiTinyMarginEnd"
+                                />
+                                <Button
+                                    icon="sap-icon://favorite"
+                                    type="Transparent"
+                                    tooltip="{i18n>addToFavoritesTooltip}"
+                                    press=".onAddToFavorite"
+                                />
+                            </HBox>
+                        </cells>
+                    </ColumnListItem>
+                </items>
+            </Table>
+        </content>
+        <core:Fragment
+            fragmentName="devgeonosis.view.fragments.Footer"
+            type="XML"
+        />
+    </Page>
+</mvc:View>
